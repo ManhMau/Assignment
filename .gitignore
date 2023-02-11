@@ -3,3 +3,4 @@
 
 Assignment/build.xml
 *.xml
+/nbproject/private/
