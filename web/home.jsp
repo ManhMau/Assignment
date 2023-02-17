@@ -232,7 +232,21 @@
                             </div>
                         </div>
                     </div>
-                    
+                     <c:forEach items="${roomTypes}" var="r">
+                         <div class="col-lg-6" style="padding: 5px">
+                            <div class="room-wrap d-md-flex">
+                                <a href="roomview?id=${r.getId()}" class="img" style="background-image: url(${r.getImg1()});"></a>
+                                <div class="half left-arrow d-flex align-items-center">
+                                    <div class="text p-4 p-xl-5 text-center">
+                                        <p class="star mb-0"><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span></p>
+                                        <p class="mb-0"><span class="price mr-1"><fmt:formatNumber value="${r.getMoney()}"></fmt:formatNumber>&dstrok;</span> <span class="per">/ Một ngày</span></p>
+                                        <h3 class="mb-3"><a href="roomview?id=${r.getId()}">${r.getType()}</a></h3>
+                                        <p class="pt-1"><a href="roomview?id=${r.getId()}" class="btn-custom px-3 py-2">Xem Phòng <span class="icon-long-arrow-right"></span></a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
                </div>
             </div>
         </section>
@@ -251,6 +265,23 @@
                         <div class="row ftco-animate">
                             <div class="col-md-12">
                                 <div class="carousel-testimony owl-carousel ftco-owl">
+                                    <c:forEach items="${reviewList}" var="r">
+                                        <div class="item">
+                                            <div class="testimony-wrap py-4 pb-5">
+                                                <div class="user-img mb-4" style="background-image: url(https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png)">
+                                                    <span class="quote d-flex align-items-center justify-content-center">
+                                                        <i class="icon-quote-left"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="text text-center">
+                                                    <p class="star"><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span></p>
+                                                    <p class="mb-4">${r.getStatus()}</p>
+                                                    <p class="name">${r.getAccount().getName()}</p>
+                                                    <span class="position">Khách Hàng</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
                                     
                                 </div>
                             </div>
