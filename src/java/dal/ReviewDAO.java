@@ -55,5 +55,22 @@ public class ReviewDAO extends DBContext {
         }
         return reviewList;
     }
+        public ArrayList<Review> getReviewByRoomType(int typeID) {
+        ArrayList<Review> reviewList = new ArrayList<>();
+        try {
+            String sql = "select r.*, a.name from Review r, Account a where r.roomType = ? and a.accountID = r.accountID";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, typeID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                RoomType rt = new RoomType();
+                rt.setId(rs.getInt(5));
+                reviewList.add(new Review(rs.getInt(1), new Account(rs.getInt(2), rs.getString(6), "", 1), rs.getInt(3), rs.getNString(4), rt));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return reviewList;
+    }
 
     }
