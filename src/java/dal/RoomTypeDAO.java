@@ -34,5 +34,20 @@ public class RoomTypeDAO extends DBContext {
         }
         return roomTypes;
     }
+    public RoomType getRoomTypeByID(int id) {
+        try {
+            String sql = "select * from RoomType where typeID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return new RoomType(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(11));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
 
        }
