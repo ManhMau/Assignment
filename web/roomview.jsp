@@ -30,9 +30,7 @@
 
         <section class="ftco-section">
             <div class="container" >
-                <div class="row" style="    align-items: center;
-                     justify-content: center;
-                     margin-left: 20px;">
+                <div class="row" style="    align-items: center; justify-content: center; margin-left: 20px;">
                     <div class="col-lg-9">
                         <div class="row">
                             <div class="col-md-12 ftco-animate">
@@ -57,7 +55,7 @@
                                         <li><span>Diện tích:</span> ${roomType.getSquare()} m2</li>
                                     </ul>
                                     <ul class="list ml-md-5">
-                                        <li><span>Phòng tắm:</span> ${roomType.getBathNum()}</li>
+                                        <li><span>Phòng tắm:</span> ${roomType.getBathNum()}</li>                                       
                                     </ul>
                                 </div>
                             </div>
@@ -173,13 +171,13 @@
                             <div class="form-group row">
                                 <label for="inputdateIn" class="col-sm-4 col-form-label">Ngày Đặt Phòng</label>
                                 <div class="col-sm-8">
-                                    <input type="date" value="${sessionScope.datein}" name="datein" class="form-control form-control-sm" onblur="checkIn()" id="inputdateIn" required>
+                                    <input type="date" value="" name="datein" class="form-control form-control-sm" onblur="checkIn()" id="inputdateIn" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputdateOut" class="col-sm-4 col-form-label">Ngày Trả Phòng</label>
                                 <div class="col-sm-8">
-                                    <input type="date" value="${sessionScope.dateout}" name="dateout" class="form-control form-control-sm" onblur="checkOut()" id="inputdateOut" required>
+                                    <input type="date" value="" name="dateout" class="form-control form-control-sm" onblur="checkOut()" id="inputdateOut" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -209,7 +207,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        ${action eq 'Booking' ? "Đặt phòng " : (action eq 'addrv' ? "Thêm đánh giá" : "")} ${success eq "true" ? ("thành công.") : "thất bại."}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
