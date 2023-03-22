@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import model.Food;
 import model.FoodCategory;
+import model.ListFood;
+import utils.CartList;
 
 /**
  *
@@ -89,7 +91,84 @@ public class FoodDAO extends DBContext{
         }
         return categories;
     }
+    public Food findById(int id) {
+        try {
+            String sql = "select f.*, fc.* from Food f, FoodCategory fc\n"
+                    + "where f.foodCategoryId = fc.foodCategoryId and  f.foodID = ?";
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Food f = new Food();
+                f.setFoodId(rs.getInt(1));
+                f.setFoodName(rs.getString(2));
+                f.setPrice(rs.getDouble(3));
+                f.setQuantity(rs.getInt(4));
+                f.setFoodImage(rs.getString(5));
+                f.setFoodCategory(new FoodCategory(rs.getInt(7), rs.getString(8)));
+                return f;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
 
-   
-    
+    public boolean insertFoodOrder(CartList cartList, int bookingId) {
+        try {
+            String sql = "insert into List_Food_Order values (?,?,?)";
+            String sql1 = "update Food \n"
+                    + "set quantity = ?\n"
+                    + "where foodID = ?";
+            stm = connection.prepareStatement(sql);
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            for (ListFood value : cartList.getCarts().values()) {
+                stm.setInt(1, bookingId);
+                stm.setInt(2, value.getFood().getFoodId());
+                stm.setInt(3, value.getQuantity());
+                stm1.setInt(1, value.getFood().getQuantity() - value.getQuantity());
+                stm1.setInt(2, value.getFood().getFoodId());
+                stm.executeUpdate();
+                stm1.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+       public boolean updateFood(Food f) {
+        try {
+            String sql = "update Food\n"
+                    + "set name = ?, price = ?, quantity = ?, foodImage = ?, foodCategoryId =? \n"
+                    + "where foodID = ?";
+            stm = connection.prepareStatement(sql);
+            stm.setNString(1, f.getFoodName());
+            stm.setDouble(2, f.getPrice());
+            stm.setInt(3, f.getQuantity());
+            stm.setString(4, f.getFoodImage());
+            stm.setInt(5, f.getFoodCategory().getFoodCategoryId());
+            stm.setInt(6, f.getFoodId());
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    public boolean insertFood(Food f) {
+        try {
+            String sql = "insert into Food (name, price, quantity, foodImage, foodCategoryId)\n"
+                    + "values (?,?,?,?,?)";
+            stm = connection.prepareStatement(sql);
+            stm.setNString(1, f.getFoodName());
+            stm.setDouble(2, f.getPrice());
+            stm.setInt(3, f.getQuantity());
+            stm.setString(4, f.getFoodImage());
+            stm.setInt(5, f.getFoodCategory().getFoodCategoryId());
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 }

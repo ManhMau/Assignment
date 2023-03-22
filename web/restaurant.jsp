@@ -94,8 +94,61 @@
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
         <%@include file="javascripts.jspf" %>
-    </body>
-</html>
+        <script>
+                                // addToCart function
+                                $(document).on('click', '#addToCart', function () {
+                                    var foodId = $(this).data('id');
+                                    $.ajax({
+                                        url: '${pageContext.request.contextPath}/addToCart',
+                                        type: "POST",
+                                        data: {
+                                            foodId: foodId,
+                                            quantity: 1,
+                                            action: 'add'
+                                        },
+                                        success: function (data) {
+                                            console.log(data);
+                                            $('#exampleModal').modal('show');
+                                            if (data === 'dateout') {
+                                                $('#addToCartMessage').html('<h5>Vui lòng đặt phòng để mua hàng <a href="${pageContext.request.contextPath}/room">tại đây</a></h5>');
+                                            } else if (data === 'success') {
+                                                $('#addToCartMessage').html('<h5>Đã thêm sản phẩm vào giỏ hàng. Kiểm tra giỏ hàng <a href="${pageContext.request.contextPath}/Cart">tại đây</a></h5>');
+                                                
+                                                $('#exampleModal').on('hidden.bs.modal', function () {
+                                                    location.reload();
+                                                });
+
+                                            } else {
+                                                $('#addToCartMessage').html('<h5>Đã có lỗi xảy ra</h5>');
+                                            }
+                                        }
+                                    });
+                                });
+
+                                pagination(${page},${totalNum},${view});
+
+                                function pagination(page, totalNum, view) {
+                                    var totalPage = Math.ceil(totalNum / view);
+                                    var html = '';
+                                    if (page > 1) {
+                                        html += '<li class="page-item"><a class="page-link" href="${link}page=' + (page - 1) + '" onclick="pagination(' + (page - 1) + ',' + totalNum + ',' + view + ')">&laquo;</a></li>';
+                                    }
+                                    for (var i = 1; i <= totalPage; i++) {
+                                        if (i == page) {
+                                            html += '<li class="page-item active"><a class="page-link" href="${link}page=' + i + '" onclick="pagination(' + i + ',' + totalNum + ',' + view + ')">' + i + '</a></li>';
+                                        } else {
+                                            html += '<li class="page-item"><a class="page-link" href="${link}page=' + i + '" onclick="pagination(' + i + ',' + totalNum + ',' + view + ')">' + i + '</a></li>';
+                                        }
+                                    }
+                                    if (page < totalPage) {
+                                        html += '<li class="page-item"><a class="page-link" href="${link}page=' + (page + 1) + '" onclick="pagination(' + (page + 1) + ',' + totalNum + ',' + view + ')">&raquo;</a></li>';
+                                    }
+                                    $('#pagination-container').html(html);
+                                }
+        </script>
+
 
     </body>
 </html>
+
+   

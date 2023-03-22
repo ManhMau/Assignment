@@ -11,14 +11,21 @@
                 <li class="nav-item active"><a href="Home" class="nav-link">Trang Chủ</a></li>
                 <li class="nav-item"><a href="room" class="nav-link">Phòng</a></li>
                 <li class="nav-item"><a href="Foods" class="nav-link">Nhà Hàng</a></li>
-                <li class="nav-item"><a href="aminities" class="nav-link">Tiện Nghi</a></li>
+                <li class="nav-item"><a href="Aminities" class="nav-link">Tiện Nghi</a></li>
                 <li class="nav-item"><a href="about" class="nav-link">Tổng Quan</a></li>
                 
                     <li class="nav-item"><a href="contact" class="nav-link">Liên Hệ</a></li>
                 
-                
-                    <li class="nav-item"><a href="Login" class="nav-link">Đăng nhập</a></li>
-                
+             <c:if test="${sessionScope.customerLogged==null}">
+                <li class="nav-item"><a href="Login" class="nav-link">Đăng nhập</a></li>
+             </c:if>
+             <c:if test="${sessionScope.customerLogged!=null}">
+                <li class="nav-item"><a href="Account" class="nav-link">Xin chào ${sessionScope.customerLogged.getName()} </a></li>
+                <li class="nav-item"><a href="Logout" class="nav-link">Đăng Xuất</a></li>
+             </c:if>
+                 <c:if test="${sessionScope.customerLogged.getRole() == 2}">
+                    <li class="nav-item"><a href="admin" class="nav-link">Quản lý</a></li>
+                </c:if>
                 
                 
             </ul>

@@ -38,7 +38,7 @@
 
 <div class="wrapper">
             <div class="sidebar" >
-                <div class="sidebar-wrapper" style="background: rgba(100, 11, 0, 0.8); text-align: center; width: 30%">
+                <div class="sidebar-wrapper" style="background: rgba(100, 11, 0, 0.8); text-align: center; width: 12%">
                  
                     <ul class="nav">
                         <li class="nav-item" style="margin-top: 100px;">
@@ -47,24 +47,13 @@
                                 <p>Trang chủ</p>
                             </a>
                         </li>
+                        
                         <li class="nav-item" style="margin-top: 100px">
-                            <a class="nav-link" href="roommanagement">
-                                <i class="fa-solid fa-person-shelter"></i>
-                                <p>Quản lí phòng</p>
-                            </a>
-                        </li>
-                        <li class="nav-item" style="margin-top: 100px">
-                            <a class="nav-link" href="FoodManagement">
+                            <a class="nav-link" href="FoodManagament">
                                 <i class="fa-solid fa-utensils"></i>
                                 <p>Quản lý thực đơn</p>
                             </a>
-                        </li>
-                        <li class="nav-item" style="margin-top: 100px">
-                            <a class="nav-link" href="ContactManagement">
-                                <i class="fa-solid fa-address-book"></i>
-                                <p>Người dùng liên hệ</p>
-                            </a>
-                        </li>
+                        </li>                       
                     </ul>
                 </div>
             </div>
@@ -81,15 +70,15 @@
                         </button>
                         <div class="collapse navbar-collapse" id="ftco-nav">
                             <ul class="navbar-nav ml-auto">
-                                <li class="nav-item active"><a href="Home" class="nav-link" style="color: black !important;">Trang Chủ</a></li>
-                                <li class="nav-item"><a href="room" class="nav-link" style="color: black !important;">Phòng</a></li>
-                                <li class="nav-item"><a href="Foods" class="nav-link" style="color: black !important;">Nhà Hàng</a></li>
-                                <li class="nav-item"><a href="aminities" class="nav-link" style="color: black !important;">Tiện Nghi</a></li>
-                                <li class="nav-item"><a href="about" class="nav-link" style="color: black !important;">Tổng Quan</a></li>
+                                <li class="nav-item active"><a href="Home" class="nav-link" style="color: black !important;">Trang Chủ</a></li>
+                                <li class="nav-item"><a href="room" class="nav-link" style="color: black !important;">Phòng</a></li>
+                                <li class="nav-item"><a href="Foods" class="nav-link" style="color: black !important;">Nhà Hàng</a></li>
+                                <li class="nav-item"><a href="aminities" class="nav-link" style="color: black !important;">Tiện Nghi</a></li>
+                                <li class="nav-item"><a href="about" class="nav-link" style="color: black !important;">Tổng Quan</a></li>
                                     
                                     
                                     <li class="nav-item"><a href="Account" class="nav-link" style="color: black !important;">Xin chào admin@gmail.com </a></li>
-                                    <li class="nav-item"><a href="Logout" class="nav-link"  style="color: black !important;">Đăng xuất</a></li>
+                                    <li class="nav-item"><a href="Logout" class="nav-link"  style="color: black !important;">Đăng xuất</a></li>
                                     
                                     
                                     <li class="nav-item"><a href="admin" class="nav-link" style="color: black !important;">Quản lý</a></li>

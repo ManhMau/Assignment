@@ -171,13 +171,13 @@
                             <div class="form-group row">
                                 <label for="inputdateIn" class="col-sm-4 col-form-label">Ngày Đặt Phòng</label>
                                 <div class="col-sm-8">
-                                    <input type="date" value="" name="datein" class="form-control form-control-sm" onblur="checkIn()" id="inputdateIn" required>
+                                    <input type="date" value="${sessionScope.datein}" name="datein" class="form-control form-control-sm" onblur="checkIn()" id="inputdateIn" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputdateOut" class="col-sm-4 col-form-label">Ngày Trả Phòng</label>
                                 <div class="col-sm-8">
-                                    <input type="date" value="" name="dateout" class="form-control form-control-sm" onblur="checkOut()" id="inputdateOut" required>
+                                    <input type="date" value="${sessionScope.dateout}" name="dateout" class="form-control form-control-sm" onblur="checkOut()" id="inputdateOut" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -207,6 +207,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                         ${action eq 'Booking' ? "Đặt phòng " : (action eq 'addrv' ? "Thêm đánh giá" : "")} ${success eq "true" ? ("thành công.") : "thất bại."}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -218,6 +219,28 @@
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
         <%@include file="javascripts.jspf" %>
-        
+        <script>
+            var act = "${action}";
+            if (act !== "") {
+                $('#message').modal('show');
+            }
+            const checkIn = () => {
+                var date = document.getElementById("inputdateIn").value;
+                var varDate = new Date(date);
+                var today = new Date();
+
+                if ((varDate.getDate() < today.getDate() && varDate.getMonth() <= today.getMonth())) {
+
+                    alert("Ngày đặt phòng cần lớn hơn hoặc bằng ngày hiện tại.");
+                }
+            };
+            const checkOut = () => {
+                var dateout = new Date(document.getElementById("inputdateOut").value);
+                var datein = new Date(document.getElementById("inputdateIn").value);
+                if (dateout <= datein) {
+                    alert("Ngày trả phòng cần lớn hơn ngày đặt phòng.");
+                }
+            };
+        </script>
     </body>
 </html>

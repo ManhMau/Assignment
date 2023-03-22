@@ -38,7 +38,22 @@ public class ReviewDAO extends DBContext {
         return count;
     }
 
-    
+    public boolean insertRating(Review r) {
+        try {
+            String sql = "insert into Review (accountID, rating, status, roomType) values (?, ?, ?, ?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, r.getAccount().getAccountId());
+            stm.setInt(2, r.getRating());
+            stm.setNString(3, r.getStatus());
+            stm.setInt(4, r.getRoomType().getId());
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+
         public ArrayList<Review> getFiveStarReview() {
         ArrayList<Review> reviewList = new ArrayList<>();
         try {
@@ -72,5 +87,32 @@ public class ReviewDAO extends DBContext {
         }
         return reviewList;
     }
-
+    public boolean allowReview(int accountID, int typeID) {
+        try {
+            String sql = "select count(*) from Booking b, Room r where b.accountID = ? and r.RoomType = ? and r.RoomNO = b.roomNo";
+            String sql2 = "select count(*) from Review r where r.accountID = ? and r.roomType = ?";
+            int i = 0;
+            int j = 0;
+            PreparedStatement stm = connection.prepareStatement(sql);
+            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            stm.setInt(1, accountID);
+            stm.setInt(2, typeID);
+            stm2.setInt(1, accountID);
+            stm2.setInt(2, typeID);
+            ResultSet rs = stm.executeQuery();
+            ResultSet rs2 = stm2.executeQuery();
+            while (rs.next()) {
+                i = rs.getInt(1);
+            }
+            while (rs2.next()) {
+                j = rs2.getInt(1);
+            }
+            if (i > 0 && j == 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
     }

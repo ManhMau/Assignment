@@ -5,7 +5,7 @@
 
 package cotroller;
 
-import dal.ReviewDAO;
+import dal.BookingDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,16 +13,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import model.Account;
-import model.Review;
-import model.RoomType;
+import model.Booking;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name="review", urlPatterns={"/review"})
-public class review extends HttpServlet {
+@WebServlet(name="Cart", urlPatterns={"/Cart"})
+public class Cart extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,31 +34,18 @@ public class review extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-         int id = (request.getParameter("id") == null) ? 0 : Integer.parseInt(request.getParameter("id"));
-        int rating = (request.getParameter("rating") == null) ? 0 : Integer.parseInt(request.getParameter("rating"));
-        String content = request.getParameter("content");
         HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("customerLogged");
-
-        ReviewDAO reviewDAO = new ReviewDAO();
-        boolean allow = reviewDAO.allowReview(acc.getAccountId(), id);
-        if (allow) {
-            RoomType rt = new RoomType();
-            rt.setId(id);
-            Review r = new Review(0, acc, rating, content, rt);
-            boolean success = reviewDAO.insertRating(r);
-            if (success) {
-                response.sendRedirect("roomview?id=" + id + "&action=addrv&success=true");
-            } else {
-                response.sendRedirect("roomview?id=" + id + "&action=addrv&success=false");
-            }
-        } else {
-            response.sendRedirect("roomview?id=" + id + "&action=addrv&success=false");
+        boolean isCart = session.getAttribute("carts") != null;
+        Account account = (Account) session.getAttribute("customerLogged");
+        if (isCart && account != null) {
+            BookingDAO dao = new BookingDAO();
+            ArrayList<Booking> booking = dao.getBookingId(account);
+            request.setAttribute("booking", booking);
         }
-        
-       
-    } 
+        if (request.getParameter("buy") != null) {
+            request.setAttribute("buy", request.getParameter("buy"));
+        }
+        request.getRequestDispatcher("cart.jsp").forward(request, response);    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

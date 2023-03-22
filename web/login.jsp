@@ -13,7 +13,7 @@
         <%@include file="head.jspf" %>
     </head>
     <body>
-        <%@include file="header.jspf" %> %>
+        <%@include file="header.jspf" %> 
         <div style="background-image: url(images/bg_2.jpg); width: 100%; height: 100%;background-size: cover;">
             <div class="row no-gutters slider-text align-items-center">
                 <div class="col-md-12 ftco-animate">

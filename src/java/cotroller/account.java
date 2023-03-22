@@ -5,7 +5,7 @@
 
 package cotroller;
 
-import dal.ReviewDAO;
+import dal.AccountDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,16 +13,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import model.Account;
-import model.Review;
-import model.RoomType;
+import model.Detail;
+import model.Food;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name="review", urlPatterns={"/review"})
-public class review extends HttpServlet {
+@WebServlet(name="Account", urlPatterns={"/Account"})
+public class account extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,30 +36,46 @@ public class review extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-         int id = (request.getParameter("id") == null) ? 0 : Integer.parseInt(request.getParameter("id"));
-        int rating = (request.getParameter("rating") == null) ? 0 : Integer.parseInt(request.getParameter("rating"));
-        String content = request.getParameter("content");
         HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("customerLogged");
-
-        ReviewDAO reviewDAO = new ReviewDAO();
-        boolean allow = reviewDAO.allowReview(acc.getAccountId(), id);
-        if (allow) {
-            RoomType rt = new RoomType();
-            rt.setId(id);
-            Review r = new Review(0, acc, rating, content, rt);
-            boolean success = reviewDAO.insertRating(r);
-            if (success) {
-                response.sendRedirect("roomview?id=" + id + "&action=addrv&success=true");
-            } else {
-                response.sendRedirect("roomview?id=" + id + "&action=addrv&success=false");
-            }
-        } else {
-            response.sendRedirect("roomview?id=" + id + "&action=addrv&success=false");
+        Account account = (Account) session.getAttribute("customerLogged");
+        AccountDAO accountDAO = new AccountDAO();
+        ArrayList<Detail> details = accountDAO.findAllBooking(account, false);
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "order";
         }
-        
-       
+        if (action.equals("order")) {
+            for (Detail detail : details) {
+                ArrayList<Food> foods = accountDAO.findAllFood(account, detail.getBookingId(), false);
+                detail.setFood(foods);
+                LocalDate localdate1 = LocalDate.now();
+                int date1 = localdate1.compareTo(detail.getInDate());
+                int date2 = localdate1.compareTo(detail.getOutDate());
+                if (date1 >= 0 && date2 <= 0) {
+                    detail.setStatus("Đang sử dụng");
+                }
+                if (date1 < 0) {
+                    detail.setStatus("Đang chờ");
+                }
+                if (date1 > 0 && date2 > 0) {
+                    detail.setStatus("Đã sử dụng");
+                }
+            }
+        }
+        if (action.equals("order-food")) {
+            if (request.getParameter("bookingId") != null) {
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                ArrayList<Food> foods = accountDAO.findAllFood(account, bookingId, false);
+                double total = 0;
+                total = foods.stream().map((food) -> food.getPrice()).reduce(total, (accumulator, _item) -> accumulator + _item);
+                request.setAttribute("bookingId", bookingId);
+                request.setAttribute("total", total);
+                request.setAttribute("foods", foods);
+            }
+        }
+        request.setAttribute("action", action);
+        request.setAttribute("details", details);
+        request.getRequestDispatcher("account.jsp").forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -58,7 +58,7 @@
                                     <div class="form-group align-self-stretch d-flex align-items-end">
                                         <div class="wrap bg-white align-self-stretch py-3 px-4">
                                             <label for="#">Ngày nhận phòng</label>
-                                            <input value=""  id="inputdateIn" name="indate" type="date" class="form-control" placeholder="Chọn ngày...">
+                                            <input value="${datein}" onblur="checkIn()"  id="inputdateIn" name="indate" type="date" class="form-control" placeholder="Chọn ngày...">
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                     <div class="form-group align-self-stretch d-flex align-items-end">
                                         <div class="wrap bg-white align-self-stretch py-3 px-4">
                                             <label for="#">Ngày trả phòng</label>
-                                            <input value=""  id="inputdateOut" name="outdate" type="date" class="form-control" placeholder="Chọn ngày...">
+                                            <input value="${dateOut}" onblur="checkOut()" id="inputdateOut" name="outdate" type="date" class="form-control" placeholder="Chọn ngày...">
                                         </div>
                                     </div>
                                 </div>
@@ -76,9 +76,11 @@
                                             <label for="#">Người</label>
                                             <div class="form-field">
                                                 <div class="select-wrap">
-                                                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                                    <div class="icon"><span class="bi bi-arrow-down"></span></div>
                                                     <select name="peopleperroom" id="" class="form-control">
-                                                        
+                                                         <c:forEach items="${ppn}" var="p">
+                                                            <option ${((peoplePerRoom == p) ? "selected" : "" )} value="${p}">${p}</option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
                                             </div>
@@ -102,7 +104,7 @@
             <div class="container">
                 <div class="row no-gutters">
                     <div class="col-md-3">
-                        <a href="room" class="services-wrap img align-items-end d-flex" style="background-image: url(images/room-3.jpg);">
+                        <a href="room" class="services-wrap img align-items-end d-flex" style="background-image: url(images/thuong2.jpg);">
                             <div class="text text-center pb-2">
                                 <h3>Phòng đặc biệt</h3>
                             </div>
@@ -270,7 +272,7 @@
                                             <div class="testimony-wrap py-4 pb-5">
                                                 <div class="user-img mb-4" style="background-image: url(https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png)">
                                                     <span class="quote d-flex align-items-center justify-content-center">
-                                                        <i class="icon-quote-left"></i>
+                                                        <i class="bi bi-quote"></i>
                                                     </span>
                                                 </div>
                                                 <div class="text text-center">
@@ -365,7 +367,27 @@
 
 
         <%@include file="javascripts.jspf" %>
-       
+       <script>
+            const checkIn = () => {
+                var date = document.getElementById("inputdateIn").value;
+                var varDate = new Date(date);
+                var today = new Date();
+                console.log(varDate.getDate());
+                console.log(today);
+
+                if ((varDate.getDate() < today.getDate() && varDate.getMonth() <= today.getMonth()) ) {
+                    
+                    alert("Ngày đặt phòng cần lớn hơn hoặc bằng ngày hiện tại.");
+                }
+            }
+            const checkOut = () => {
+                var dateout = new Date(document.getElementById("inputdateOut").value);
+                var datein = new Date(document.getElementById("inputdateIn").value);
+                if (dateout <= datein) {
+                    alert("Ngày trả phòng cần lớn hơn ngày đặt phòng.");
+                }
+            }
+        </script>
    
     </body>
 </html>
